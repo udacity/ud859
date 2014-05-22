@@ -13,3 +13,6 @@ hs_err_pid*
 
 # OSX
 .DS_Store
+
+# compiled Java
+target/*
