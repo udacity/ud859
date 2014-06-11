@@ -1,0 +1,20 @@
+   /**
+     * This is an ugly workaround for null userId for Android clients.
+     *
+     * @param user A User object injected by the cloud endpoints.
+     * @return the App Engine userId for the user.
+     */
+    private static String getUserId(User user) {
+        String userId = user.getUserId();
+        if (userId == null) {
+            LOG.info("userId is null, so trying to obtain it from the datastore.");
+            AppEngineUser appEngineUser = new AppEngineUser(user);
+            ofy().save().entity(appEngineUser).now();
+            // Begin new session for not using session cache.
+            Objectify objectify = ofy().factory().begin();
+            AppEngineUser savedUser = objectify.load().key(appEngineUser.getKey()).now();
+            userId = savedUser.getUser().getUserId();
+            LOG.info("Obtained the userId: " + userId);
+        }
+        return userId;
+    }

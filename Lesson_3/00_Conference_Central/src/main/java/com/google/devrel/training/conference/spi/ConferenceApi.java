@@ -10,15 +10,19 @@ import com.google.appengine.api.users.User;
 import com.google.devrel.training.conference.Constants;
 import com.google.devrel.training.conference.domain.Profile;
 import com.google.devrel.training.conference.form.ProfileForm;
+import com.google.devrel.training.conference.form.ProfileForm.TeeShirtSize;
 import com.googlecode.objectify.Key;
 
 /**
  * Defines conference APIs.
  */
-@Api(name = "conference", version = "v1", scopes = { Constants.EMAIL_SCOPE }, clientIds = {
-		Constants.WEB_CLIENT_ID, Constants.API_EXPLORER_CLIENT_ID }, description = "API for the Conference Central Backend application.")
-public class ConferenceApi {
+@Api(name = "conference", version = "v1", scopes = {Constants.EMAIL_SCOPE },
+    clientIds = {
+		Constants.WEB_CLIENT_ID,
+		Constants.API_EXPLORER_CLIENT_ID },
+    description = "API for the Conference Central Backend application.")
 
+public class ConferenceApi {
 	/*
 	 * Get the display name from the user's email. For example, if the email is
 	 * lemoncake@example.com, then the display name becomes "lemoncake."
@@ -30,7 +34,7 @@ public class ConferenceApi {
 	/**
 	 * Creates or updates a Profile object associated with the given user
 	 * object.
-	 * 
+	 *
 	 * @param user
 	 *            A User object injected by the cloud endpoints.
 	 * @param profileForm
@@ -40,54 +44,57 @@ public class ConferenceApi {
 	 *             when the User object is null.
 	 */
 
-	// Declare this method as a method available externally through Endpoints
+    // Declare this method as a method available externally through Endpoints
 	@ApiMethod(name = "saveProfile", path = "profile", httpMethod = HttpMethod.POST)
+	
 	// The request that invokes this method should provide data that
 	// conforms to the fields defined in ProfileForm
 
 	// TODO 1 Pass the ProfileForm parameter
 	// TODO 2 Pass the User parameter
-	public Profile saveProfile(final User user, ProfileForm profileForm) 
+	public Profile saveProfile(final User user, ProfileForm profileForm)
 			throws UnauthorizedException {
-		
+
 		String userId = "";
 		String mainEmail = "";
 		String displayName = "Your name will go here";
-		String teeShirtSize = "I will know your tee shirt size as soon as you tell me";
+		TeeShirtSize teeShirtSize = TeeShirtSize.NOT_SPECIFIED;
 
 		// TODO 2
 		// If the user is not logged in, throw an UnauthorizedException
 		if (user == null) {
             throw new UnauthorizedException("Authorization required");
         }
+
+		// TODO 1
+	    // Set the teeShirtSize to the value sent by the ProfileForm, if sent
+        // otherwise leave it as the default value
+		 if (profileForm.getTeeShirtSize() != null) {
+			 teeShirtSize = profileForm.getTeeShirtSize();
+		 }
+
+		// TODO 1
+        // Set the displayName to the value sent by the ProfileForm, if sent
+        // otherwise set it to null
+		displayName = profileForm.getDisplayName();
 		
 		// TODO 2
 		// Get the userId and mainEmail
 		mainEmail = user.getEmail();
 		userId = user.getUserId();
-		
-		// TODO 1
-		// Get the displayName and teeShirtSize sent by the request.
-		// Un-comment this code
-		 displayName = profileForm.getDisplayName(); 
-		 if (profileForm.getTeeShirtSize() != null) {
-			 teeShirtSize = profileForm.getTeeShirtSize();
-		 }
 
-		// TODO 2
-		// Populate the displayName with the default value if null.
-		// Uncomment this code
-		
-		 if (displayName == null) { 
-		   displayName = extractDefaultDisplayNameFromEmail(user.getEmail()); 
+        // TODO 2
+        // If the displayName is null, set it to the default value based on the user's email
+        // by calling extractDefaultDisplayNameFromEmail(...)
+		 if (displayName == null) {
+		   displayName = extractDefaultDisplayNameFromEmail(user.getEmail());
 		   }
 
 		// Create a new Profile entity from the
 		// userId, displayName, mainEmail and teeShirtSize
-		Profile profile = new Profile(userId, displayName, mainEmail, 
-				teeShirtSize);
+		Profile profile = new Profile(userId, displayName, mainEmail, teeShirtSize);
 
-		// TODO 3
+		// TODO 3 (In lesson 3)
 		// Save the entity in the datastore
 
 		// Return the profile
@@ -97,7 +104,7 @@ public class ConferenceApi {
 	/**
 	 * Returns a Profile object associated with the given user object. The cloud
 	 * endpoints system automatically inject the User object.
-	 * 
+	 *
 	 * @param user
 	 *            A User object injected by the cloud endpoints.
 	 * @return Profile object.
@@ -110,7 +117,7 @@ public class ConferenceApi {
 			throw new UnauthorizedException("Authorization required");
 		}
 
-		// TODO 
+		// TODO
 		// load the Profile Entity
 		String userId = ""; // TODO
 		Key key = null; // TODO

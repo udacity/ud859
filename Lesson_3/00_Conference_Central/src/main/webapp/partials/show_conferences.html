@@ -1,3 +1,135 @@
-<div ng-controller="ConferenceCtrl">
-    <h1>Conference</h1>
+<div ng-controller="ShowConferenceCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="messages" class="alert alert-{{alertStatus}}" ng-show="messages">
+                <span ng-bind="messages"></span>
+                <i class="dismiss-messages pull-right glyphicon glyphicon-remove" ng-click="messages = ''"
+                   ng-show="messages"></i>
+            </div>
+            <img class="spinner" src="/img/ajax-loader.gif" ng-show="loading"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>Show conferences</h3>
+        </div>
+    </div>
+
+    <tabset id="show-conferences-tab" justified="true">
+        <tab select="tabAllSelected()" heading="All"></tab>
+        <tab select="tabYouHaveCreatedSelected()" heading="You've created"></tab>
+        <tab select="tabYouWillAttendSelected()" heading="You'll attend (You've attended)"></tab>
+    </tabset>
+
+    <div class="row row-offcanvas row-offcanvas-right" ng-class="{active: isOffcanvasEnabled}">
+        <div class="col-xs-12 col-sm-8">
+
+            <button ng-click="queryConferences();" class="btn btn-primary">
+                <i class="glyphicon glyphicon-search"></i> Search
+            </button>
+
+            <p class="pull-right visible-xs">
+                <button ng-hide="selectedTab != 'ALL'" type="button" class="btn btn-primary btn-sm" data-toggle="offcanvas"
+                        ng-click="isOffcanvasEnabled = !isOffcanvasEnabled">
+                    <i class="glyphicon glyphicon-chevron-left" ng-show="isOffcanvasEnabled"></i>
+                    <span ng-show="isOffcanvasEnabled">Hide</span>
+                    <span ng-hide="isOffcanvasEnabled">Show</span>
+                    filters
+                    <i class="glyphicon glyphicon-chevron-right" ng-hide="isOffcanvasEnabled"></i>
+                </button>
+            </p>
+
+            <div ng-show="submitted && conferences.length == 0">
+                <h4>No matching results.</h4>
+            </div>
+            <div class="table-responsive" ng-show="conferences.length > 0">
+                <table id="conference-table" class="table table-striped table-hover">
+                    <thead>
+                    <tr>
+                        <th>Details</th>
+                        <th>Name</th>
+                        <th>City</th>
+                        <th>Start Date</th>
+                        <th>Organizer</th>
+                        <th>Registered/Open</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="conference in conferences | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize">
+                        <td><a href="#/conference/detail/{{conference.websafeKey}}">Details</a></td>
+                        <td>{{conference.name}}</td>
+                        <td>{{conference.city}}</td>
+                        <td>{{conference.startDate | date:'dd-MMMM-yyyy'}}</td>
+                        <td>{{conference.organizerDisplayName}}</td>
+                        <td>{{conference.maxAttendees - conference.seatsAvailable}} / {{conference.maxAttendees}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <ul class="pagination" ng-show="conferences.length > 0">
+                <li ng-class="{disabled: pagination.currentPage == 0 }">
+                    <a ng-class="{disabled: pagination.currentPage == 0 }"
+                       ng-click="pagination.isDisabled($event) || (pagination.currentPage = 0)">&lt&lt</a>
+                </li>
+                <li ng-class="{disabled: pagination.currentPage == 0 }">
+                    <a ng-class="{disabled: pagination.currentPage == 0 }"
+                       ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.currentPage - 1)">&lt</a>
+                </li>
+
+                <!-- ng-repeat creates a new scope. Need to specify the pagination.currentPage as $parent.pagination.currentPage -->
+                <li ng-repeat="page in pagination.pageArray()" ng-class="{active: $parent.pagination.currentPage == page}">
+                    <a ng-click="$parent.pagination.currentPage = page">{{page + 1}}</a>
+                </li>
+
+                <li ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}">
+                    <a ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}"
+                       ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.currentPage + 1)">&gt</a>
+                </li>
+                <li ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}">
+                    <a ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}"
+                       ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.numberOfPages() - 1)">&gt&gt</a>
+                </li>
+            </ul>
+        </div>
+
+        <div ng-hide="selectedTab != 'ALL'" class="col-xs-6 col-sm-4 sidebar-offcanvas" id="sidebar" role="navigation">
+            <button ng-click="addFilter()" class="btn btn-primary">
+                <i class="glyphicon glyphicon-plus"></i> Filter
+            </button>
+            <button ng-click="clearFilters()" class="btn btn-primary" ng-disabled="filters.length == 0">Clear</button>
+
+            <ul id="filters" ng-repeat="filter in filters">
+                <li>
+                    <form class="form-horizontal" name="filterForm-$index" novalidate role="form">
+                        <div class="form-group-condensed">
+                            <label class="form-control-static">Field: </label>
+                            <select class="form-control-sm" ng-model="filters[$index].field"
+                                    ng-options="field.displayName for field in filtereableFields">
+                            </select>
+                        </div>
+                        <div class="form-group-condensed">
+                            <label class="form-control-static">Operator: </label>
+                            <select class="form-control-sm" ng-model="filters[$index].operator"
+                                    ng-options="operator.displayName for operator in operators">
+                            </select>
+                        </div>
+                        <div class="form-roup-condensed" ng-class="{'has-error': filters[$index].value.length == 0}">
+                            <label class="form-control-static">Value: </label>
+                            <input type="text" class="form-control-sm" name="value" ng-model="filters[$index].value"
+                                   ng-required="true">
+                            <span class="label label-danger"
+                                  ng-show="filters[$index].value.length == 0">Required</span>
+                        </div>
+                        <div class="form-group-condensed">
+                            <button class="btn btn-danger btn-xs" ng-click="removeFilter($index)"><i
+                                    class="glyphicon glyphicon-remove"></i></button>
+                        </div>
+                    </form>
+                </li>
+            </ul>
+        </div>
+
+    </div>
 </div>

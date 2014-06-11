@@ -1,17 +1,39 @@
-<div ng-controller="ConferenceCtrl">
-    <!-- TODO thagikura still under construction -->
-    <h1>Profile</h1>
-    <ul class="unstyled">
-        <li ng-repeat="profile in profiles">
-            <input id="profile-{{profile.userId}}" type="checkbox" >
-            <label for="profile-{{profile.userId}}" >{{profile.displayName}}</label>
-        </li>
-    </ul>
-    <form ng-submit="saveProfile()">
-        <input type="text" ng-model="displayName"  size="40"
-               placeholder="Display Name">
-        <input type="text" ng-model="notificationEmail"  size="40"
-               placeholder="Notification Email">
-        <input class="btn-primary btn-success" type="submit" value="Save">
-    </form>
+<div ng-controller="MyProfileCtrl" ng-init="init()">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="messages" class="alert alert-{{alertStatus}}" ng-show="messages">
+                <span ng-bind="messages"></span>
+                <i class="dismiss-messages pull-right glyphicon glyphicon-remove" ng-click="messages = ''"
+                   ng-show="messages"></i>
+            </div>
+            <img class="spinner" src="/img/ajax-loader.gif" ng-show="loading"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <h3>My Profile</h3>
+            <form name="profileForm" novalidate role="form">
+                <div class="form-group" ng-class="{'has-warning': profile.displayName != initialProfile.displayName}">
+                    <label for="displayName">Display Name </label>
+                    <span class="label label-warning"
+                          ng-show="profile.displayName != initialProfile.displayName"> Changed</span>
+                    <input id="displayName" type="text" name="displayName" ng-model="profile.displayName"
+                           class="form-control"/>
+                </div>
+
+                <div class="form-group" ng-class="{'has-warning': profile.teeShirtSize != initialProfile.teeShirtSize}">
+                    <label for="teeShirtSize">Tee shirt size</label>
+                    <span class="label label-warning"
+                          ng-show="profile.teeShirtSize != initialProfile.teeShirtSize"> Changed</span>
+                    <select id="teeShirtSize" ng-model="profile.teeShirtSize" name="teeShirtSize" ng-options="size for size in teeShirtSizes"
+                            class="form-control">
+                    </select>
+                </div>
+
+                <button ng-click="saveProfile(profileForm)" class="btn btn-primary"
+                        ng-disabled="loading">Update profile
+                </button>
+            </form>
+        </div>
+    </div>
 </div>

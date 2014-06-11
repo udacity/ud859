@@ -13,6 +13,21 @@ hs_err_pid*
 
 # OSX
 .DS_Store
+_DS_Store
 
 # compiled Java
 target/*
+target/
+build/
+.gradle
+datanucleus.log
+out
+*.iml
+*.ipr
+*.iws
+
+# various configs
+.idea
+.settings
+.classpath
+.project

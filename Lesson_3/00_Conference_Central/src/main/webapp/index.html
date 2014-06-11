@@ -1,66 +1,91 @@
 <!DOCTYPE html>
-<html ng-app="conferenceApp" lang="en">
+<!-- Bootstrap the angular app after the Google Java Script libraries are loaded. -->
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Conference Management</title>
+    <title>Conference Central</title>
 
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap-cosmo.css">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/offcanvas.css">
+    <link rel="shortcut icon" href="/img/favicon.ico">
+    <meta property="og:title" content="Conference Central">
+    <meta property="og:type" content="website">
+    <meta property="og:description" content="Conference Central web app that lets you manage conferences.">
+    <meta property="og:image" content="/img/CloudPlatform_logo.png">
+    <meta property="og:site_name" content="An web app powered by Google App Engine">
+
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
+    <script>
+        /**
+         * Initializes the Google API JavaScript client. Bootstrap the angular module after loading the Google libraries
+         * so that Google JavaScript library ready in the angular modules.
+         */
+        function init() {
+            gapi.client.load('conference', 'v1', null, '//' + window.location.host + '/_ah/api');
+            gapi.client.load('oauth2', 'v2', function () {
+                angular.bootstrap(document, ['conferenceApp']);
+            });
+        };
+    </script>
+    <script src="//apis.google.com/js/client:plusone.js?onload=init"></script>
 </head>
 
-<body ng-controller="RootCtrl">
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<!-- Restore the credential from cookie if stored by calling initSignInButton() -->
+<body ng-controller="RootCtrl" ng-init="initSignInButton()">
+
+<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container">
-        <div class="navbar-hearder">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
             <a class="navbar-brand" href="/">Conference Central</a>
         </div>
-        <div class="collapse navbar-collapse">
+        <div class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
-                <li><a href="#/conference">Show Conferences</a></li>
-                <li><a href="#/conference/create">Create Conferences</a></li>
-                <li><a href="#/profile">Profile</a></li>
+                <li ng-class="{ active: isActive('/conference')}" ng-click="collapseNavbar()"><a href="#/conference">Show Conferences</a></li>
+                <li ng-class="{ active: isActive('/conference/create')}" ng-click="collapseNavbar()"><a href="#/conference/create" >Create Conferences</a></li>
+                <li ng-class="{ active: isActive('/profile')}" ng-click="collapseNavbar()"><a href="#/profile">My Profile</a></li>
+                <li class="nav-divider"></li>
             </ul>
-
-            <div id="profile-container">
-                <div id="signInButtonContainer" ng-hide="signedIn">
-                    <img id="signInButton" ng-mouseleave="signInButtonImage = 'img/Red-signin_Medium_base_32dp.png'"
-                         ng-mouseover="signInButtonImage = 'img/Red-signin_Medium_hover_32dp.png'"
-                         ng-src="{{signInButtonImage}}" ng-click="signIn()"/>
-                </div>
-
-                <div id="profile" class="pull-right" ng-show="signedIn">
-                    <!-- TODO thagikura remove a trailing slash in the profileImageUrl -->
-                    <img id="pic" ng-src={{profileImageUrl}}/>
-                    <span id="name"></span>
-                    <a ng-click="signOut()">Sign out</a>
-                </div>
-            </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li id="signInLink" ng-hide="getSignedInState()"><a ng-click="signIn(); collapseNavbar()">Google+ SignIn</a></li>
+                <li id="signOutLink" ng-show="getSignedInState()"><a ng-click="signOut(); collapseNavbar()">Log out</a></li>
+            </ul>
         </div>
     </div>
 </div>
 
 <div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="rootMessages" class="alert alert-{{alertStatus}}" ng-show="rootMessages">
+                <span ng-bind="rootMessages"></span>
+                <i class="dismiss-messages pull-right glyphicon glyphicon-remove" ng-click="rootMessages = ''"
+                   ng-show="rootMessages"></i>
+            </div>
+        </div>
+    </div>
     <ng-view></ng-view>
 </div>
 
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.js"></script>
-<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular-route.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.10.0/ui-bootstrap-tpls.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 <script src="/js/app.js"></script>
 <script src="/js/controllers.js"></script>
 
-<script>
-    /**
-     * Initializes the Google API JavaScript client.
-     */
-    function init() {
-        gapi.client.load('conference', 'v1', null, '//' + window.location.host + '/_ah/api');
-        gapi.client.load('oauth2', 'v2', null);
-    }
-</script>
-<script src="//apis.google.com/js/client.js?onload=init"></script>
+<!-- Put the signInButton to invoke the gapi.signin.render to restore the credential if stored in cookie. -->
+<span id="signInButton" style="display: none" disabled="true"></span>
+
 </body>
 </html>

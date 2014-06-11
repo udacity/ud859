@@ -1,0 +1,109 @@
+<!-- Sample datastore-indexes containing indexes we need for the web UI -->
+
+<datastore-indexes autoGenerate="true">
+
+	<!-- Used 1 time in query history -->
+    <datastore-index kind="Conference" ancestor="true" source="auto">
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="city" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="topics" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="month" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 2 times in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="maxAttendees" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="city" direction="asc"/>
+        <property name="maxAttendees" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="topics" direction="asc"/>
+        <property name="maxAttendees" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="month" direction="asc"/>
+        <property name="maxAttendees" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="city" direction="asc"/>
+        <property name="month" direction="asc"/>
+        <property name="maxAttendees" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="month" direction="asc"/>
+        <property name="topics" direction="asc"/>
+        <property name="maxAttendees" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="city" direction="asc"/>
+        <property name="month" direction="asc"/>
+        <property name="topics" direction="asc"/>
+        <property name="maxAttendees" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="city" direction="asc"/>
+        <property name="month" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="month" direction="asc"/>
+        <property name="topics" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="city" direction="asc"/>
+        <property name="month" direction="asc"/>
+        <property name="topics" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+    <!-- Used 1 time in query history -->
+    <datastore-index kind="Conference" ancestor="false" source="auto">
+        <property name="city" direction="asc"/>
+        <property name="topics" direction="asc"/>
+        <property name="name" direction="asc"/>
+    </datastore-index>
+
+</datastore-indexes>

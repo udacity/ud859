@@ -1,0 +1,12 @@
+import java.util.List;
+import com.googlecode.objectify.cmd.Query;
+
+@ApiMethod(
+            name = "queryConferences",
+            path = "queryConferences",
+            httpMethod = HttpMethod.POST
+    )
+    public List<Conference> queryConferences() {
+        Query query = ofy().load().type(Conference.class).order("name");
+        return query.list();
+    }

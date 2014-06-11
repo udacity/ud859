@@ -1,4 +1,4 @@
 ud859
 =====
 
-Course code for Cloud Scaling with Google App Engine class
+Course code for Building Scalable Apps with Google App Engine class

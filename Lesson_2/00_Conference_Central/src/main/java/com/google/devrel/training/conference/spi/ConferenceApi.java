@@ -10,6 +10,7 @@ import com.google.appengine.api.users.User;
 import com.google.devrel.training.conference.Constants;
 import com.google.devrel.training.conference.domain.Profile;
 import com.google.devrel.training.conference.form.ProfileForm;
+import com.google.devrel.training.conference.form.ProfileForm.TeeShirtSize;
 import com.googlecode.objectify.Key;
 
 /**
@@ -30,7 +31,7 @@ public class ConferenceApi {
     /**
      * Creates or updates a Profile object associated with the given user
      * object.
-     * 
+     *
      * @param user
      *            A User object injected by the cloud endpoints.
      * @param profileForm
@@ -48,45 +49,36 @@ public class ConferenceApi {
     // TODO 1 Pass the ProfileForm parameter
     // TODO 2 Pass the User parameter
     public Profile saveProfile() throws UnauthorizedException {
-        
-        String userId = "";
-        String mainEmail = "";
+
+        String userId = null;
+        String mainEmail = null;
         String displayName = "Your name will go here";
-        String teeShirtSize = "I will know your tee shirt size as soon as you tell me";
+        TeeShirtSize teeShirtSize = TeeShirtSize.NOT_SPECIFIED;
 
         // TODO 2
         // If the user is not logged in, throw an UnauthorizedException
-        
-        // TODO 2
-        // Get the userId and mainEmail
-        
+
         // TODO 1
-        // Get the displayName and teeShirtSize sent by the request.
-        // Un-comment this code
-        /*
-         displayName = profileForm.getDisplayName(); 
-         if (profileForm.getTeeShirtSize() != null) {
-             teeShirtSize = profileForm.getTeeShirtSize();
-         }
-        */
-        
+        // Set the teeShirtSize to the value sent by the ProfileForm, if sent
+        // otherwise leave it as the default value
+
+        // TODO 1
+        // Set the displayName to the value sent by the ProfileForm, if sent
+        // otherwise set it to null
 
         // TODO 2
-        // Populate the displayName with the default value if null.
-        // Uncomment this code
-        /*
-         if (displayName == null) { 
-           displayName = extractDefaultDisplayNameFromEmail(user.getEmail()); 
-           }
-         */
+        // Get the userId and mainEmail
+
+        // TODO 2
+        // If the displayName is null, set it to default value based on the user's email
+        // by calling extractDefaultDisplayNameFromEmail(...)
 
         // Create a new Profile entity from the
         // userId, displayName, mainEmail and teeShirtSize
-        Profile profile = new Profile(userId, displayName, mainEmail, 
-                teeShirtSize);
+        Profile profile = new Profile(userId, displayName, mainEmail, teeShirtSize);
 
-        // TODO 3
-        // Save the entity in the datastore
+        // TODO 3 (In Lesson 3)
+        // Save the Profile entity in the datastore
 
         // Return the profile
         return profile;
@@ -95,7 +87,7 @@ public class ConferenceApi {
     /**
      * Returns a Profile object associated with the given user object. The cloud
      * endpoints system automatically inject the User object.
-     * 
+     *
      * @param user
      *            A User object injected by the cloud endpoints.
      * @return Profile object.
@@ -108,7 +100,7 @@ public class ConferenceApi {
             throw new UnauthorizedException("Authorization required");
         }
 
-        // TODO 
+        // TODO
         // load the Profile Entity
         String userId = ""; // TODO
         Key key = null; // TODO

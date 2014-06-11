@@ -1,0 +1,56 @@
+<div ng-controller="ConferenceDetailCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="messages" class="alert alert-{{alertStatus}}" ng-show="messages">
+                <span ng-bind="messages"></span>
+                <i class="dismiss-messages pull-right glyphicon glyphicon-remove" ng-click="messages = ''"
+                   ng-show="messages"></i>
+            </div>
+            <img class="spinner" src="/img/ajax-loader.gif" ng-show="loading"/>
+        </div>
+    </div>
+
+    <div class="row" ng-init="init()">
+        <div class="col-md-9">
+            <div class="well well-sm">
+                <h2>{{conference.name}}</h2>
+                <h5>{{conference.description}}</h5>
+                <div>
+                    <label for="registered">Registered/Open: </label>
+                    <span id="registered">{{conference.maxAttendees - conference.seatsAvailable}} / {{conference.maxAttendees}}</span>
+                </div>
+                <div>
+                    <label for="organizer">Organizer: </label>
+                    <span id="organizer">{{conference.organizerDisplayName}}</span>
+                </div>
+                <p><a class="btn btn-primary" ng-hide="isUserAttending" ng-click="registerForConference()"
+                        ng-disabled="loading">Register</a></p>
+                <p><a class="btn btn-primary" ng-show="isUserAttending" ng-click="unregisterFromConference()"
+                        ng-disabled="loading">Unregister</a></p>
+            </div>
+
+            <form class="form" novalidate role="form">
+                <fieldset>
+                    <div>
+                        <label for="city">City: </label>
+                        <span id="city">{{conference.city}}</span>
+                    </div>
+                    <div>
+                        <label for="topics">Topics: </label>
+                        <span id="topics">
+                            <span ng-repeat="topic in conference.topics" class="label label-primary label-separated">{{topic}}</span>
+                        </span>
+                    </div>
+                    <div>
+                        <label for="startDate">Start Date: </label>
+                        <span id="startDate">{{conference.startDate | date:'dd-MMMM-yyyy'}}</span>
+                    </div>
+                    <div>
+                        <label for="endDate">End Date: </label>
+                        <span id="endDate">{{conference.endDate | date:'dd-MMMM-yyyy'}}</span>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,9 +1,53 @@
+html, body {
+    height: 100%;
+}
+
 body {
-    padding-top: 50px;
+    padding-top: 70px;
+}
+
+#signInLink, #signOutLink {
+    cursor: pointer;
+}
+
+/* To disable the Google+ Sign In Button, but gapi.signin.render should be invoked to store the credential
+   if that is stored in cookie. */
+#signInButton iframe {
+    display: none;
 }
 
 .required {
     color: red;
+}
+
+.dismiss-messages {
+    cursor: pointer;
+}
+
+/* In a small screen, make the alert message sticky to the top */
+@media (max-width: 768px) {
+    #messages.alert, #rootMessages.alert {
+        position: fixed;
+        left: 0;
+        right: 0;
+        top: 65px;
+        z-index: 1000;
+    }
+}
+
+.form-group-condensed {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.label-separated {
+    margin-right: 8px;
+}
+
+.spinner {
+    position: fixed;
+    top: 70px;
+    z-index: 9999;
 }
 
 #signInButton {
@@ -13,11 +57,50 @@ body {
 
 #profile-container {
     float: right;
-    font-size: 13px;
+    font-size: 85%;
 }
 
 #profile img {
     max-height: 35px;
     width: auto;
     vertical-align: middle;
+}
+
+#show-conferences-tab {
+    margin-bottom: 20px;
+}
+
+ul#filters {
+    list-style: none;
+    padding-left: 0px;
+    font-size: 85%;
+}
+
+ul#filters span.glyphicon-remove {
+    font-size: 80%;
+}
+
+ul#conferences-list {
+    list-style: none;
+}
+
+.intro-header {
+    padding-top: 50px;
+    padding-bottom: 50px;
+    color: #f8f8f8;
+    text-shadow: black 0.1em 0.1em 0.2em;
+    background: url(/img/meeting-room.jpg) no-repeat center center;
+    background-size: cover;
+    text-align: center;
+}
+
+.intro-message {
+    position: relative;
+    padding-top: 5%;
+    padding-bottom: 5%;
+    vertical-align: middle;
+}
+
+.section-a {
+    padding: 50px 0;
 }

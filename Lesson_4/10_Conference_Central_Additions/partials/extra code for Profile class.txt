@@ -1,0 +1,25 @@
+import com.google.common.collect.ImmutableList;
+
+// List of conferences the user has registered to attend
+private List<String> conferenceKeysToAttend = new ArrayList<>(0);
+
+public List<String> getConferenceKeysToAttend() {
+        return ImmutableList.copyOf(conferenceKeysToAttend);
+    }
+    
+    public void addToConferenceKeysToAttend(String conferenceKey) {
+        conferenceKeysToAttend.add(conferenceKey);
+    }
+    
+    /**
+     * Remove the conferenceId from conferenceIdsToAttend.
+     *
+     * @param conferenceKey a websafe String representation of the Conference Key.
+     */
+    public void unregisterFromConference(String conferenceKey) {
+        if (conferenceKeysToAttend.contains(conferenceKey)) {
+            conferenceKeysToAttend.remove(conferenceKey);
+        } else {
+            throw new IllegalArgumentException("Invalid conferenceKey: " + conferenceKey);
+        }
+    }

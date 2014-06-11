@@ -1,3 +1,65 @@
-<div ng-controller="ConferenceCtrl">
-    <h1>This is home.</h1>
+<div class="intro-header">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="intro-message">
+                <h1>Welcome to Conference Central</h1>
+
+                <h3>Lets you manage conferences</h3>
+                <hr class="intro-divider">
+                <ul class="list-inline intro-social-buttons">
+                    <li id="signInLink" ng-hide="getSignedInState()" on-click="return false">
+                        <a class="btn btn-default btn-lg" ng-click="signIn()">Google+ SignIn</a>
+                    </li>
+                    <li id="signOutLink" ng-show="getSignedInState()" on-click="return false">
+                        <a class="btn btn-default btn-lg" ng-click="signOut()">Log out</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="section-a">
+    <div class="row">
+        <div class="col-lg-5 col-sm-6">
+            <hr>
+            <div class="clearfix"></div>
+            <h2>View conferences</h2>
+
+            <p class="lead">View by city, topics, date, max attendees.</p>
+            <a href="#/conference" class="btn btn-default btn-lg">View conferences</a>
+        </div>
+        <div class="col-lg-5 col-lg-offset-2 col-sm-6">
+            <img class="img-responsive" src="/img/business1.jpg" alt="">
+        </div>
+    </div>
+</div>
+
+<div class="section-a">
+    <div class="row">
+        <div class="col-lg-5 col-lg-offset-1 col-sm-push-6  col-sm-6">
+            <hr class="section-heading-spacer">
+            <div class="clearfix"></div>
+            <h2 class="section-heading">Create new conferences</h2>
+
+            <p class="lead">In 10 seconds or less.</p>
+            <a href="#/conference/create" class="btn btn-default btn-lg">Create a conference</a>
+        </div>
+        <div class="col-lg-5 col-sm-pull-6  col-sm-6">
+            <img class="img-responsive" src="/img/business2.jpg" alt="">
+        </div>
+    </div>
+</div>
+
+<div class="section-a">
+    <div class="row">
+        <div class="col-lg-5 col-sm-6">
+            <hr>
+            <div class="clearfix"></div>
+            <h2 class="section-heading">Update your profile</h2>
+            <a href="#/profile" class="btn btn-default btn-lg">View my profile</a>
+        </div>
+        <div class="col-lg-5 col-lg-offset-2 col-sm-6">
+            <img class="img-responsive" src="/img/business3.jpg" alt="">
+        </div>
+    </div>
 </div>

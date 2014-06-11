@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    <servlet>
+        <servlet-name>SetAnnouncementServlet</servlet-name>
+        <servlet-class>com.google.devrel.training.conference.servlet.SetAnnouncementServlet</servlet-class>
+    </servlet>
+     <servlet-mapping>
+        <servlet-name>SetAnnouncementServlet</servlet-name>
+        <url-pattern>/crons/set_announcement</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>SystemServiceServlet</servlet-name>
+        <servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
+        <init-param>
+            <param-name>services</param-name>
+            <param-value>com.google.devrel.training.conference.spi.ConferenceApi</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SystemServiceServlet</servlet-name>
+        <url-pattern>/_ah/spi/*</url-pattern>
+    </servlet-mapping>
+    
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>crons</web-resource-name>
+            <url-pattern>/crons/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>admin</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+     <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>all</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    
+    <servlet>
+       <servlet-name>SendConfirmationEmailServlet</servlet-name>
+       <servlet-class>com.google.devrel.training.conference.servlet.SendConfirmationEmailServlet</servlet-class>
+   </servlet>
+   <servlet-mapping>
+       <servlet-name>SendConfirmationEmailServlet</servlet-name>
+       <url-pattern>/tasks/send_confirmation_email</url-pattern>
+   </servlet-mapping>
+   <security-constraint>
+       <web-resource-collection>
+           <web-resource-name>tasks</web-resource-name>
+           <url-pattern>/tasks/*</url-pattern>
+       </web-resource-collection>
+       <auth-constraint>
+           <role-name>admin</role-name>
+       </auth-constraint>
+   </security-constraint>
+    
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+    
+</web-app>

@@ -1,5 +1,6 @@
 package com.google.devrel.training.conference.domain;
 
+import com.google.devrel.training.conference.form.ProfileForm.TeeShirtSize;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
 
@@ -8,7 +9,7 @@ import com.googlecode.objectify.annotation.Id;
 public class Profile {
 	String displayName;
 	String mainEmail;
-	String teeShirtSize;
+	TeeShirtSize teeShirtSize;
 
 	// TODO indicate that the userId is to be used in the Entity's key
 	String userId;
@@ -21,7 +22,7 @@ public class Profile {
      * @param teeShirtSize The User's tee shirt size
      * 
      */
-    public Profile (String userId, String displayName, String mainEmail, String teeShirtSize) {
+    public Profile (String userId, String displayName, String mainEmail, TeeShirtSize teeShirtSize) {
     	this.userId = userId;
     	this.displayName = displayName;
     	this.mainEmail = mainEmail;
@@ -36,7 +37,7 @@ public class Profile {
 		return mainEmail;
 	}
 
-	public String getTeeShirtSize() {
+	public TeeShirtSize getTeeShirtSize() {
 		return teeShirtSize;
 	}
 

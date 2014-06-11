@@ -101,14 +101,14 @@
                 <version>${appengine.target.version}</version>
                 <configuration>
                     <enableJarClasses>false</enableJarClasses>
-                </configuration>
-                <executions>
+                </configuration>   
+                 <executions>
                     <execution>
                         <goals>
                             <goal>endpoints_get_discovery_doc</goal>
                         </goals>
                     </execution>
-                </executions>
+                </executions>  
             </plugin>
         </plugins>
     </build>
